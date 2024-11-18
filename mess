@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Czat</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <main>
+        <h1>Lista użytkowników</h1>
+        <?php foreach ($users as $user): ?>
+            <div class="user">
+                <img src="<?= htmlspecialchars($user['photo']); ?>" alt="Zdjęcie użytkownika">
+                <p><?= htmlspecialchars($user['username']); ?></p>
+                <button class="chat-btn" data-user-id="<?= $user['id']; ?>">Czat</button>
+            </div>
+        <?php endforeach; ?>
+    </main>
+
+    <!-- Okno czatu -->
+    <div id="chat-window" style="display:none;">
+        <h2 id="chat-user-name"></h2>
+        <div id="chat-messages" style="height:300px; overflow-y:scroll; border:1px solid #ccc; margin-bottom:10px;"></div>
+        <textarea id="chat-input" placeholder="Wpisz wiadomość..."></textarea>
+        <button id="send-message">Wyślij</button>
+        <button id="close-chat">Zamknij</button>
+    </div>
+
+    <script>
+        let chatUserId = null;
+
+        // Funkcja otwierania czatu
+        $(".chat-btn").on("click", function () {
+            chatUserId = $(this).data("user-id");
+            const chatUserName = $(this).siblings("p").text();
+
+            $("#chat-user-name").text("Czat z " + chatUserName);
+            $("#chat-window").show();
+
+            loadMessages(); // Wczytaj wiadomości
+        });
+
+        // Funkcja zamykania czatu
+        $("#close-chat").on("click", function () {
+            $("#chat-window").hide();
+            $("#chat-messages").empty();
+        });
+
+        // Wysyłanie wiadomości
+        $("#send-message").on("click", function () {
+            const message = $("#chat-input").val();
+            if (message.trim() === "") return;
+
+            $.post("send_message.php", {receiver_id: chatUserId, message: message}, function (response) {
+                $("#chat-input").val("");
+                loadMessages();
+            });
+        });
+
+        // Funkcja ładowania wiadomości
+        function loadMessages() {
+            if (!chatUserId) return;
+
+            $.get("messages.php", {chat_user_id: chatUserId}, function (data) {
+                const messages = JSON.parse(data);
+                const chatMessages = $("#chat-messages");
+                chatMessages.empty();
+
+                messages.forEach(msg => {
+                    const isSender = msg.sender_id === <?= $_SESSION['user_id']; ?>;
+                    const messageHtml = `
+                        <div style="text-align:${isSender ? 'right' : 'left'};">
+                            <p>${msg.message}</p>
+                            <small>${msg.timestamp}</small>
+                        </div>
+                    `;
+                    chatMessages.append(messageHtml);
+                });
+
+                chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
+            });
+        }
+
+        // Odświeżanie wiadomości co 2 sekundy
+        setInterval(loadMessages, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Logowanie</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Globalne ustawienia */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Tło strony */
+        }
+
+        /* Stylowanie formularza */
+        form {
+            width: 100%;
+            max-width: 400px; /* Maksymalna szerokość formularza */
+            margin: 50px auto; /* Wyśrodkowanie formularza */
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        /* Stylowanie etykiet */
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .icon {
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        /* Stylowanie pól formularza */
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Stylowanie przycisku submit */
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Stylowanie ikony widoczności hasła */
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Stylowanie dla urządzeń mobilnych */
+        @media (max-width: 768px) {
+            form {
+                width: 90%;
+                padding: 15px;
+            }
+
+            input[type="text"], input[type="password"] {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+
+            input[type="submit"] {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form action="login.php" method="post">
+        <h2>Zaloguj się</h2>
+
+        <!-- Pole loginu (email/numer telefonu) -->
+        <label for="login_input">
+            <span class="material-icons icon">account_circle</span> Login, email lub numer telefonu:
+        </label>
+        <input type="text" id="login_input" name="login_input" required>
+
+        <!-- Pole hasła -->
+        <label for="password">
+            <span class="material-icons icon">lock</span> Hasło:
+        </label>
+        <div style="position: relative;">
+            <input type="password" id="password" name="password" required>
+            <span class="material-icons password-toggle" onclick="togglePassword()">visibility</span>
+        </div>
+
+        <!-- Przycisk logowania -->
+        <input type="submit" value="Zaloguj się">
+    </form>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            const toggleIcon = document.querySelector(".password-toggle");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.textContent = "visibility_off";
+            } else {
+                passwordField.type = "password";
+                toggleIcon.textContent = "visibility";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejestracja</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styled.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Zarejestruj się</h2>
+        <form action="register.php" method="post">
+            <div class="form-group">
+                <label for="username">
+                    <span class="material-icons icon">account_circle</span> Nazwa użytkownika:
+                </label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">
+                    <span class="material-icons icon">email</span> Email:
+                </label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Płeć:</label>
+                <select name="gender" id="gender" required>
+                    <option value="Woman">Wybierz</option>
+                    <option value="Man">Mężczyzna</option>
+                    <option value="Woman">Kobieta</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">
+                    <span class="material-icons icon">phone</span> Numer telefonu:
+                </label>
+                <input type="text" id="phone" name="phone" required>
+            </div>
+
+            <!-- Dodajemy pole dla wieku -->
+            <div class="form-group">
+                <label for="age">Wiek:</label>
+                <input type="number" id="age" name="age" min="18" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    <span class="material-icons icon">lock</span> Hasło:
+                </label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" required 
+                    pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" 
+                    title="Hasło musi zawierać przynajmniej 8 znaków, w tym jedną wielką literę, cyfrę i znak specjalny">
+                    <span class="material-icons password-toggle" onclick="togglePassword()">visibility</span>
+                </div>
+                <small class="password-requirements">
+                    Hasło musi zawierać przynajmniej:
+                    <ul>
+                        <li>1 wielką literę</li>
+                        <li>1 cyfrę</li>
+                        <li>1 znak specjalny (@, $, !, %, *, ?, &)</li>
+                        <li>Min. 8 znaków</li>
+                    </ul>
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">
+                    <span class="material-icons icon">lock</span> Potwierdź hasło:
+                </label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="terms" id="terms" required> 
+                    Zgadzam się na <a href="#">regulamin</a> i <a href="#">politykę prywatności</a>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Zarejestruj się">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            const toggleIcon = document.querySelector(".password-toggle");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.textContent = "visibility_off";
+            } else {
+                passwordField.type = "password";
+                toggleIcon.textContent = "visibility";
+            }
+        }
+    </script>
+</body>
+</html>
